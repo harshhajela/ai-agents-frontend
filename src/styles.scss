@@ -1,1 +1,231 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles with Theme Support */
+
+:root {
+  /* Light Theme Colors - Based on the beautiful gradient from your image */
+  --primary-gradient-start: #2D1B69;
+  --primary-gradient-mid: #6366F1;
+  --primary-gradient-end: #8B5CF6;
+  --accent-gold: #F59E0B;
+  --accent-gold-light: #FCD34D;
+
+  /* Light Theme Variables */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-tertiary: #F1F5F9;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --border-color: #E2E8F0;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --shadow-heavy: rgba(0, 0, 0, 0.25);
+
+  /* Interactive Colors */
+  --btn-primary: var(--primary-gradient-mid);
+  --btn-primary-hover: var(--primary-gradient-start);
+  --link-color: var(--primary-gradient-mid);
+  --focus-color: var(--primary-gradient-mid);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme Variables */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --border-color: #475569;
+  --shadow-light: rgba(0, 0, 0, 0.3);
+  --shadow-medium: rgba(0, 0, 0, 0.4);
+  --shadow-heavy: rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Shimmering Background Effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    var(--primary-gradient-start) 0%,
+    var(--primary-gradient-mid) 25%,
+    var(--primary-gradient-end) 50%,
+    var(--primary-gradient-mid) 75%,
+    var(--primary-gradient-start) 100%
+  );
+  background-size: 400% 400%;
+  animation: shimmer 25s ease-in-out infinite;
+  opacity: 0.03;
+  z-index: -2;
+  pointer-events: none;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 0.08;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Floating particles for extra shimmer effect */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 25% 25%, var(--accent-gold) 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, var(--primary-gradient-mid) 1px, transparent 1px),
+    radial-gradient(circle at 50% 10%, var(--primary-gradient-end) 1px, transparent 1px);
+  background-size: 100px 100px, 150px 150px, 200px 200px;
+  animation: float 30s linear infinite;
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.15;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+p {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--btn-primary-hover);
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+  }
+}
+
+input, textarea {
+  font-family: inherit;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+    border-color: var(--focus-color);
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Theme Toggle Button Styles */
+.theme-toggle {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 25px;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px var(--shadow-light);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px var(--shadow-medium);
+  }
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+  }
+}

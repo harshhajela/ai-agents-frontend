@@ -5,8 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
+    "serve:prod": "npx http-server dist/ai-agents-app/browser -p 4300 -c-1",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "docker:build": "docker build -t ai-agents-app .",
+    "docker:run": "docker run -p 3000:80 ai-agents-app",
+    "docker:compose": "docker-compose up --build"
   },
   "prettier": {
     "printWidth": 100,
@@ -28,6 +36,7 @@
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "ngx-markdown": "^20.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

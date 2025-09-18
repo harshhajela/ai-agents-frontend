@@ -1,0 +1,50 @@
+@if (isVisible && historyItem) {
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Research History Details</h2>
+      <button class="close-button" (click)="onClose()" aria-label="Close modal">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="query-section">
+        <h3>Query</h3>
+        <p class="query-text">{{ historyItem.query }}</p>
+        <div class="date-info">
+          <span class="date">{{ formatDate(historyItem.created_at) }}</span>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <h3>Research Summary</h3>
+        <div class="markdown-content">
+          <markdown [data]="historyItem.final_summary"></markdown>
+        </div>
+      </div>
+
+      @if (historyItem.sources && historyItem.sources.length > 0) {
+      <div class="sources-section">
+        <h3>Sources</h3>
+        <ul class="sources-list">
+          @for (source of historyItem.sources; track source.url) {
+          <li class="source-item">
+            <a [href]="source.url" target="_blank" rel="noopener noreferrer">
+              {{ source.title }}
+            </a>
+          </li>
+          }
+        </ul>
+      </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="close-footer-button" (click)="onClose()">Close</button>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,162 @@
+@if (websiteData()) {
+<div class="agent-detail-container">
+  <div class="back-button-container">
+    <button class="back-button" (click)="goBack()">
+      ← Back to Home
+    </button>
+  </div>
+
+  <div class="agent-content" *ngIf="agentInfo(); else notFound">
+    <header class="agent-header">
+      <h1>{{ agentInfo()?.name }}</h1>
+    </header>
+
+    <section class="architecture-showcase">
+      <div class="architecture-image">
+        <img [src]="websiteData()!.images.architecture_diagram"
+             alt="Architecture Diagram"
+             class="diagram-image" />
+      </div>
+      <div class="architecture-info">
+        <h2>Architecture Overview</h2>
+        <p>{{ agentInfo()?.architecture }}</p>
+      </div>
+    </section>
+
+    <section class="agent-info">
+      <div class="info-section">
+        <h2>How it Works</h2>
+        <p>{{ agentInfo()?.description }}</p>
+        @if (agentInfo()?.features) {
+        <div class="features">
+          <h3>Key Features:</h3>
+          <ul>
+            @for (feature of agentInfo()?.features; track feature) {
+            <li>{{ feature }}</li>
+            }
+          </ul>
+        </div>
+        }
+      </div>
+
+      <div class="info-section">
+        <h2>Cost</h2>
+        <p>{{ agentInfo()?.cost }}</p>
+      </div>
+
+      @if (agentInfo()?.use_cases) {
+      <div class="info-section">
+        <h2>Use Cases</h2>
+        <div class="use-cases">
+          @for (useCase of agentInfo()?.use_cases; track useCase) {
+          <div class="use-case-item">{{ useCase }}</div>
+          }
+        </div>
+      </div>
+      }
+    </section>
+
+    <section class="query-section">
+      <h2>Try the Agent</h2>
+      <form (ngSubmit)="submitQuery()" class="query-form">
+        <div class="input-group">
+          <textarea
+            [(ngModel)]="query"
+            name="query"
+            placeholder="Enter your research query here..."
+            rows="4"
+            class="query-input"
+            [disabled]="isLoading()"
+          ></textarea>
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="!query().trim() || isLoading()"
+          >
+            <span *ngIf="!isLoading()">Submit Query</span>
+            <span *ngIf="isLoading()" class="loading-spinner">
+              <div class="spinner"></div>
+              Processing...
+            </span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="history-section" *ngIf="history().length > 0">
+      <h2>Query History</h2>
+      <div class="history-list">
+        @if (isLoadingHistory()) {
+        <div class="history-loading">
+          <div class="spinner"></div>
+          <span>Loading history...</span>
+        </div>
+        } @else if (historyError()) {
+        <div class="history-error">
+          <p>{{ historyError() }}</p>
+          <button class="retry-button" (click)="loadHistory()">Retry</button>
+        </div>
+        } @else {
+        @for (historyItem of history(); track historyItem.created_at) {
+        <div class="history-item">
+          <div class="history-content">
+            <div class="history-query">
+              <p>{{ truncateQuery(historyItem.query) }}</p>
+            </div>
+            <div class="history-meta">
+              <span class="history-date">{{ formatDate(historyItem.created_at) }}</span>
+            </div>
+          </div>
+          <button class="see-more-button" (click)="openHistoryModal(historyItem)">
+            See More
+          </button>
+        </div>
+        }
+        }
+      </div>
+    </section>
+
+    <section class="results-section" *ngIf="result() || error()">
+      <div class="error-message" *ngIf="error()">
+        <h3>Error</h3>
+        <p>{{ error() }}</p>
+      </div>
+
+      <div class="result-content" *ngIf="result()">
+        <div class="summary-section">
+          <h3>{{ submittedQuery() || 'Research Summary' }}</h3>
+          <div class="markdown-content">
+            <markdown [data]="result()?.final_summary"></markdown>
+          </div>
+        </div>
+
+        <div class="sources-section" *ngIf="result()?.sources?.length">
+          <h3>Sources</h3>
+          <ul class="sources-list">
+            <li *ngFor="let source of result()?.sources" class="source-item">
+              <a [href]="source.url" target="_blank" rel="noopener noreferrer">
+                {{ source.title }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <ng-template #notFound>
+    <div class="not-found">
+      <h1>Agent Not Found</h1>
+      <p>The requested agent could not be found.</p>
+      <button class="back-button" (click)="goBack()">Back to Home</button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- History Modal -->
+<app-history-modal
+  [historyItem]="selectedHistoryItem()"
+  [isVisible]="isModalVisible()"
+  (close)="closeHistoryModal()">
+</app-history-modal>
+}

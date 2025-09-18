@@ -1,0 +1,310 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px var(--shadow-heavy);
+  border: 1px solid var(--border-color);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+
+  h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(
+      135deg,
+      var(--primary-gradient-start),
+      var(--primary-gradient-mid)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    color: var(--text-secondary);
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+
+  .query-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-gradient-mid);
+
+    h3 {
+      margin: 0 0 1rem 0;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .query-text {
+      margin: 0 0 1rem 0;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .date-info {
+      .date {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        background: var(--bg-tertiary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .summary-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+
+    h3 {
+      margin: 0 0 1.5rem 0;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .markdown-content {
+      ::ng-deep {
+        h1, h2, h3, h4, h5, h6 {
+          color: var(--text-primary);
+          margin-top: 1.5rem;
+          margin-bottom: 0.5rem;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+
+        p {
+          margin-bottom: 1rem;
+          color: var(--text-secondary);
+          line-height: 1.7;
+        }
+
+        ul, ol {
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+
+          li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+          }
+        }
+
+        code {
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          padding: 0.2rem 0.4rem;
+          border-radius: 4px;
+          font-size: 0.9em;
+        }
+
+        pre {
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          padding: 1rem;
+          border-radius: 8px;
+          overflow-x: auto;
+          border: 1px solid var(--border-color);
+        }
+
+        blockquote {
+          border-left: 4px solid var(--primary-gradient-mid);
+          margin: 1rem 0;
+          padding-left: 1rem;
+          color: var(--text-secondary);
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .sources-section {
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+
+    h3 {
+      margin: 0 0 1.5rem 0;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .sources-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .source-item {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--bg-tertiary);
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-gradient-mid);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: var(--bg-secondary);
+          transform: translateX(4px);
+        }
+
+        a {
+          color: var(--primary-gradient-mid);
+          text-decoration: none;
+          font-weight: 500;
+          display: block;
+          transition: color 0.3s ease;
+
+          &:hover {
+            text-decoration: underline;
+            color: var(--primary-gradient-start);
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-footer {
+  padding: 1rem 2rem 2rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+
+  .close-footer-button {
+    background: linear-gradient(
+      135deg,
+      var(--primary-gradient-start),
+      var(--primary-gradient-mid)
+    );
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        var(--primary-gradient-mid),
+        var(--primary-gradient-end)
+      );
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-backdrop {
+    padding: 0.5rem;
+  }
+
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+
+    .query-section,
+    .summary-section,
+    .sources-section {
+      padding: 1rem;
+    }
+  }
+
+  .modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+  }
+}

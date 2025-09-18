@@ -1,0 +1,91 @@
+{
+  "site": {
+    "title": "AI Agents Hub",
+    "description": "Discover and interact with powerful AI agents designed to assist with various tasks"
+  },
+  "images": {
+    "architecture_diagram": "/assets/architecture_diagram_live.gif",
+    "logo_light": "/assets/harsh_hajela_logo_light.png",
+    "logo_dark": "/assets/harsh_hajela_logo_dark.png"
+  },
+  "hero": {
+    "title": "Welcome to AI Agents Hub",
+    "subtitle": "Discover and interact with powerful AI agents designed to assist with various tasks. From research to analysis, our agents are here to help you accomplish more.",
+    "cta_text": "Explore Agents",
+    "scroll_text": "Scroll to explore"
+  },
+  "navigation": {
+    "home": "Home",
+    "agents": "Agents",
+    "about": "About"
+  },
+  "agents": [
+    {
+      "id": "research",
+      "name": "Research Agent",
+      "summary": "AI research assistant using LangChain, Tavily, OpenRouter, FastAPI, Docker.",
+      "description": "The Research Agent is an intelligent assistant that helps you conduct comprehensive research on any topic. It searches multiple web sources, analyzes information, and provides detailed summaries with proper source citations. Results are also persisted into Google Sheets for easy retrieval and organization.",
+      "architecture": "Built on a microservices architecture using FastAPI for the backend API, LangChain for AI orchestration, Tavily for web search capabilities, and OpenRouter for access to multiple language models. The entire system is containerized with Docker for easy deployment and scaling. Integrated with Google Sheets for persistence of research results and query history. Designed for scalable, reliable, efficient operations.",
+      "cost": "Usage-based pricing: $0.005 per search query + $0.001 per 1K tokens processed. First 100 queries per month are free.",
+      "cost_details": [
+        {
+          "item": "Web Search",
+          "price": "$0.005 per search query"
+        },
+        {
+          "item": "LLM Processing",
+          "price": "$0.001 per 1K tokens"
+        },
+        {
+          "item": "API Calls",
+          "price": "Free for first 100 queries/month"
+        }
+      ],
+      "techStack": [
+        "LangChain",
+        "Tavily",
+        "OpenRouter",
+        "FastAPI",
+        "Docker",
+        "Google Sheets"
+      ],
+      "features": [
+        "Multi-source web search",
+        "Real-time information retrieval",
+        "Source citation and verification",
+        "Comprehensive analysis and synthesis",
+        "Structured markdown responses",
+        "Google Sheets persistence for query history",
+        "Query Processing: Your question is analyzed and broken down into search components",
+        "Information Retrieval: Multiple web sources are searched and relevant content is extracted",
+        "Analysis & Synthesis: AI models analyze and synthesize information from all sources",
+        "Response Generation: A comprehensive, well-structured response is generated with source citations"
+      ],
+      "use_cases": [
+        "Academic research and analysis",
+        "Market research and competitive intelligence",
+        "Technical documentation and tutorials",
+        "News analysis and trend identification",
+        "Fact-checking and verification",
+        "Organizing and retrieving past research queries from Google Sheets"
+      ]
+    }
+  ],
+  "footer": {
+    "copyright": "© 2024 AI Agents Hub. All rights reserved.",
+    "links": [
+      {
+        "title": "Privacy Policy",
+        "url": "/privacy"
+      },
+      {
+        "title": "Terms of Service",
+        "url": "/terms"
+      },
+      {
+        "title": "Contact",
+        "url": "/contact"
+      }
+    ]
+  }
+}

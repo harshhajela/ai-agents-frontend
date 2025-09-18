@@ -1,0 +1,44 @@
+@if (websiteData()) {
+<section class="hero">
+  <div class="hero-content">
+    <h1>{{ websiteData()!.hero.title }}</h1>
+    <p>{{ websiteData()!.hero.subtitle }}</p>
+    <button class="cta-button" (click)="scrollToSection('agents')">{{ websiteData()!.hero.cta_text }}</button>
+  </div>
+  <div class="scroll-indicator" (click)="scrollToSection('agents')">
+    <div class="scroll-arrow">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+    <span>{{ websiteData()!.hero.scroll_text }}</span>
+  </div>
+</section>
+
+<section class="agents-section" id="agents">
+  <div class="container">
+    <h2>Try the Agent</h2>
+    <div class="agents-grid">
+      @for (agent of websiteData()!.agents; track agent.id) {
+      <div class="agent-card">
+        <div class="card-image">
+          <img [src]="websiteData()!.images.architecture_diagram"
+               alt="Architecture Diagram"
+               class="architecture-diagram" />
+        </div>
+        <div class="card-content">
+          <h3>{{ agent.name }}</h3>
+          <p class="summary">{{ agent.summary }}</p>
+          <div class="tech-stack">
+            @for (tech of agent.techStack; track tech) {
+            <span class="tech-tag">{{ tech }}</span>
+            }
+          </div>
+          <button class="try-button" (click)="navigateToAgent(agent.id)">Try Me</button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+}

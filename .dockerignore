@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Build output
+dist/
+.angular/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+
+# Test files
+*.spec.ts
+*.test.ts
+e2e/
+coverage/
+
+# Development files
+src/**/*.spec.ts
+karma.conf.js
+protractor.conf.js
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
+logs/
+*.log

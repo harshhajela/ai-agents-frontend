@@ -32,6 +32,8 @@
             "assets": [
               "src/favicon.ico",
               "src/manifest.json",
+              "src/robots.txt",
+              "src/sitemap.xml",
               "src/assets",
               "src/.htaccess"
             ],

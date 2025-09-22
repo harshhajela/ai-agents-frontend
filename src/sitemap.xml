@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://ai-agents.harshhajela.com/</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ai-agents.harshhajela.com/assets/harsh_hajela_logo.png</image:loc>
+      <image:title>AI Agents Hub Logo</image:title>
+      <image:caption>Intelligent Research and Automation Tools</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Home Page -->
+  <url>
+    <loc>https://ai-agents.harshhajela.com/home</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Research Agent Page -->
+  <url>
+    <loc>https://ai-agents.harshhajela.com/agents/research</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://ai-agents.harshhajela.com/assets/architecture_diagram.png</image:loc>
+      <image:title>AI Research Agent Architecture</image:title>
+      <image:caption>LangChain orchestrated research workflow with Tavily and OpenRouter</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://ai-agents.harshhajela.com/about</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Agents Landing -->
+  <url>
+    <loc>https://ai-agents.harshhajela.com/agents</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>

@@ -23,12 +23,67 @@ jobs:
 
       - name: Update Production Environment
         run: |
+          echo "Original environment.prod.ts content:"
+          cat src/environments/environment.prod.ts
+          echo "Replacing API URL with: $API_URL"
+
+          # Replace the placeholder URL with the actual API URL
           sed -i "s|https://api.yourdomain.com|${API_URL}|g" src/environments/environment.prod.ts
+
+          # Also handle case where localhost might be present
+          sed -i "s|http://localhost:[0-9]*|${API_URL}|g" src/environments/environment.prod.ts
+
+          # Direct replacement approach for apiUrl field
+          sed -i "s|apiUrl: '[^']*'|apiUrl: '${API_URL}'|g" src/environments/environment.prod.ts
+
+          echo "Updated environment.prod.ts content:"
+          cat src/environments/environment.prod.ts
+
+          # Verify the replacement worked
+          if grep -q "${API_URL}" src/environments/environment.prod.ts; then
+            echo "SUCCESS: API_URL replacement confirmed in environment.prod.ts"
+          else
+            echo "ERROR: API_URL replacement failed in environment.prod.ts"
+            exit 1
+          fi
         env:
           API_URL: ${{ secrets.API_URL }}
 
       - name: Build Angular App
         run: npm run build -- --configuration production
+
+      - name: Verify API URL in Built Files
+        run: |
+          echo "Checking if API URL was properly injected in built files..."
+          echo "Looking for API URL: $API_URL"
+
+          # Check for localhost references
+          echo "Checking for localhost references..."
+          if grep -r "localhost" ./dist/ai-agents-app/browser/ --include="*.js"; then
+            echo "❌ ERROR: Found localhost references in built files!"
+            echo "Listing files with localhost:"
+            grep -r "localhost" ./dist/ai-agents-app/browser/ --include="*.js" -l
+            exit 1
+          else
+            echo "✅ SUCCESS: No localhost references found in built files"
+          fi
+
+          # Check for correct API URL
+          echo "Checking for correct API URL..."
+          if grep -r "$API_URL" ./dist/ai-agents-app/browser/ --include="*.js"; then
+            echo "✅ SUCCESS: Found correct API URL in built files"
+            echo "Files containing the API URL:"
+            grep -r "$API_URL" ./dist/ai-agents-app/browser/ --include="*.js" -l
+          else
+            echo "⚠️  WARNING: API URL not found in built files"
+            echo "This might be normal if the URL is dynamically constructed"
+          fi
+
+          # Show sample of environment-related content in main JS files
+          echo "Sample environment content from main JS files:"
+          grep -r "apiUrl\|environment" ./dist/ai-agents-app/browser/ --include="*.js" | head -5
+        env:
+          API_URL: ${{ secrets.API_URL }}
 
       - name: Sync S3 Bucket
         run: |

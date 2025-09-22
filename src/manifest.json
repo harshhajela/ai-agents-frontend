@@ -1,22 +1,57 @@
 {
-  "name": "AI Agents Hub",
-  "short_name": "AI Agents",
-  "description": "Explore and try powerful AI agents for research, coding, and automation",
+  "name": "AI Agents Hub - Intelligent Research & Automation Tools",
+  "short_name": "AI Agents Hub",
+  "description": "Discover powerful AI agents for research, coding, and automation. Experience intelligent web research with real-time synthesis using LangChain, Tavily, and OpenRouter integration.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#1e3a8a",
   "orientation": "portrait-primary",
   "scope": "/",
+  "id": "ai-agents-hub",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "48x48 32x32 16x16",
       "type": "image/x-icon",
       "purpose": "any maskable"
+    },
+    {
+      "src": "assets/harsh_hajela_logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/harsh_hajela_logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "utilities", "developer"],
+  "categories": ["productivity", "utilities", "developer", "business", "education"],
   "lang": "en",
-  "dir": "ltr"
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "assets/architecture_diagram.png",
+      "sizes": "1200x800",
+      "type": "image/png",
+      "label": "AI Research Agent Architecture"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Research Agent",
+      "short_name": "Research",
+      "description": "Start using the AI Research Agent",
+      "url": "/agents/research",
+      "icons": [
+        {
+          "src": "favicon.ico",
+          "sizes": "32x32"
+        }
+      ]
+    }
+  ]
 }

@@ -2,9 +2,8 @@
 <header>
   <div class="header-container">
     <div class="header-left">
-      <img [src]="isDarkTheme() ? websiteData()!.images.logo_dark : websiteData()!.images.logo_light"
-        alt="Logo" class="logo-icon" />
-      <h1 class="site-title">{{ websiteData()!.site.title }}</h1>
+      <img src="assets/harsh_hajela_logo.png"
+        alt="Harsh Hajela Logo" class="logo-icon" />
     </div>
     <div class="nav-and-controls">
       <nav class="nav-desktop">
@@ -43,4 +42,6 @@
 <main>
   <router-outlet />
 </main>
+
+<app-install-prompt></app-install-prompt>
 }

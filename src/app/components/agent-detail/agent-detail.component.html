@@ -11,79 +11,160 @@
       <h1>{{ agentInfo()?.name }}</h1>
     </header>
 
-    <section class="architecture-showcase">
-      <div class="architecture-image">
-        <img [src]="websiteData()!.images.architecture_diagram"
-             alt="Architecture Diagram"
-             class="diagram-image" />
-      </div>
-      <div class="architecture-info">
-        <h2>Architecture Overview</h2>
-        <p>{{ agentInfo()?.architecture }}</p>
-      </div>
-    </section>
+    <!-- Try Agent Section with GIF and Search Box -->
+    <section class="try-agent-landing">
+      <div class="landing-grid">
+        <div class="gif-section">
+          <div class="gif-container">
+            <img [src]="websiteData()!.images.architecture_diagram"
+                 alt="Architecture Diagram"
+                 class="architecture-gif" />
+          </div>
+        </div>
 
-    <section class="agent-info">
-      <div class="info-section">
-        <h2>How it Works</h2>
-        <p>{{ agentInfo()?.description }}</p>
-        @if (agentInfo()?.features) {
-        <div class="features">
-          <h3>Key Features:</h3>
-          <ul>
-            @for (feature of agentInfo()?.features; track feature) {
-            <li>{{ feature }}</li>
-            }
-          </ul>
+        <div class="search-section">
+          <h2>Try the Research Agent</h2>
+          <p class="search-description">Experience the power of AI-driven research with real-time web search and intelligent synthesis</p>
+
+          <form (ngSubmit)="submitQuery()" class="query-form">
+            <div class="input-group">
+              <textarea
+                [(ngModel)]="query"
+                name="query"
+                placeholder="Enter your research query here..."
+                rows="4"
+                class="query-input"
+                [disabled]="isLoading() || showAnimation()"
+              ></textarea>
+              <button
+                type="submit"
+                class="submit-button"
+                [disabled]="!query().trim() || isLoading() || showAnimation()"
+              >
+                @if (!isLoading()) {
+                <span>Submit Query</span>
+                } @else {
+                <span class="loading-text">
+                  <div class="mini-spinner"></div>
+                  Processing...
+                </span>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Process Animation -->
+      @if (showAnimation()) {
+      <div class="animation-container">
+        <app-process-animation [isVisible]="showAnimation()"></app-process-animation>
+      </div>
+      }
+
+      <!-- Results Section -->
+      @if (result() || error()) {
+      <div class="results-section">
+        @if (error()) {
+        <div class="error-message">
+          <h3>Error</h3>
+          <p>{{ error() }}</p>
+        </div>
+        }
+
+        @if (result()) {
+        <div class="result-content">
+          <div class="summary-section">
+            <h3>{{ submittedQuery() || 'Research Summary' }}</h3>
+            <div class="markdown-content">
+              <markdown [data]="result()?.final_summary"></markdown>
+            </div>
+          </div>
+
+          @if (result()?.sources?.length) {
+          <div class="sources-section">
+            <h3>Sources</h3>
+            <ul class="sources-list">
+              @for (source of result()?.sources; track source.url) {
+              <li class="source-item">
+                <a [href]="source.url" target="_blank" rel="noopener noreferrer">
+                  {{ source.title }}
+                </a>
+              </li>
+              }
+            </ul>
+          </div>
+          }
         </div>
         }
       </div>
+      }
 
-      <div class="info-section">
-        <h2>Cost</h2>
-        <p>{{ agentInfo()?.cost }}</p>
-      </div>
-
-      @if (agentInfo()?.use_cases) {
-      <div class="info-section">
-        <h2>Use Cases</h2>
-        <div class="use-cases">
-          @for (useCase of agentInfo()?.use_cases; track useCase) {
-          <div class="use-case-item">{{ useCase }}</div>
+      <!-- Recent History Section -->
+      @if (history().length > 0) {
+      <div class="recent-history-section">
+        <h3>Recent Queries</h3>
+        <div class="recent-history-list">
+          @for (historyItem of history().slice(0, 3); track historyItem.created_at) {
+          <div class="recent-history-item" (click)="openHistoryModal(historyItem)">
+            <div class="history-query-preview">
+              <p>{{ truncateQuery(historyItem.query, 60) }}</p>
+            </div>
+            <div class="history-date">
+              <span>{{ formatDate(historyItem.created_at) }}</span>
+            </div>
+          </div>
           }
         </div>
+        @if (history().length > 3) {
+        <button class="view-more-btn" (click)="scrollToSection('history-section')">
+          View All History
+        </button>
+        }
       </div>
       }
     </section>
 
-    <section class="query-section">
-      <h2>Try the Agent</h2>
-      <form (ngSubmit)="submitQuery()" class="query-form">
-        <div class="input-group">
-          <textarea
-            [(ngModel)]="query"
-            name="query"
-            placeholder="Enter your research query here..."
-            rows="4"
-            class="query-input"
-            [disabled]="isLoading()"
-          ></textarea>
-          <button
-            type="submit"
-            class="submit-button"
-            [disabled]="!query().trim() || isLoading()"
-          >
-            <span *ngIf="!isLoading()">Submit Query</span>
-            <span *ngIf="isLoading()" class="loading-spinner">
-              <div class="spinner"></div>
-              Processing...
-            </span>
-          </button>
+    <section class="agent-info">
+      <div class="info-grid">
+        <div class="info-left">
+          <div class="info-section">
+            <h2>How it Works</h2>
+            <p>{{ agentInfo()?.description }}</p>
+            @if (agentInfo()?.features) {
+            <div class="features">
+              <h3>Key Features:</h3>
+              <ul>
+                @for (feature of agentInfo()?.features; track feature) {
+                <li>{{ feature }}</li>
+                }
+              </ul>
+            </div>
+            }
+          </div>
         </div>
-      </form>
+
+        <div class="info-right">
+          @if (agentInfo()?.use_cases) {
+          <div class="info-section">
+            <h2>Use Cases</h2>
+            <div class="use-cases">
+              @for (useCase of agentInfo()?.use_cases; track useCase) {
+              <div class="use-case-item">{{ useCase }}</div>
+              }
+            </div>
+          </div>
+          }
+
+          <div class="info-section">
+            <h2>Cost</h2>
+            <p>{{ agentInfo()?.cost }}</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="history-section" *ngIf="history().length > 0">
+    <section class="history-section" id="history-section" *ngIf="history().length > 0">
       <h2>Query History</h2>
       <div class="history-list">
         @if (isLoadingHistory()) {
@@ -113,33 +194,6 @@
         </div>
         }
         }
-      </div>
-    </section>
-
-    <section class="results-section" *ngIf="result() || error()">
-      <div class="error-message" *ngIf="error()">
-        <h3>Error</h3>
-        <p>{{ error() }}</p>
-      </div>
-
-      <div class="result-content" *ngIf="result()">
-        <div class="summary-section">
-          <h3>{{ submittedQuery() || 'Research Summary' }}</h3>
-          <div class="markdown-content">
-            <markdown [data]="result()?.final_summary"></markdown>
-          </div>
-        </div>
-
-        <div class="sources-section" *ngIf="result()?.sources?.length">
-          <h3>Sources</h3>
-          <ul class="sources-list">
-            <li *ngFor="let source of result()?.sources" class="source-item">
-              <a [href]="source.url" target="_blank" rel="noopener noreferrer">
-                {{ source.title }}
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
     </section>
   </div>

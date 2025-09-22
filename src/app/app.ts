@@ -3,10 +3,12 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { WebsiteDataService, WebsiteData } from './services/website-data.service';
+import { InstallPromptComponent } from './components/install-prompt/install-prompt.component';
+import { PwaService } from './services/pwa.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HttpClientModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, HttpClientModule, InstallPromptComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -16,8 +18,9 @@ export class App implements OnInit {
   websiteData = signal<WebsiteData | null>(null);
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private websiteDataService: WebsiteDataService
+    @Inject(PLATFORM_ID) private platformId: object,
+    private websiteDataService: WebsiteDataService,
+    private pwaService: PwaService
   ) {}
 
   ngOnInit() {

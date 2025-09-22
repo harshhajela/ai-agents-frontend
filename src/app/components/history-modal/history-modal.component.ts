@@ -12,7 +12,7 @@ import { type HistoryItem } from '../../services/research-agent.service';
 })
 export class HistoryModalComponent {
   @Input() historyItem: HistoryItem | null = null;
-  @Input() isVisible: boolean = false;
+  @Input() isVisible = false;
   @Output() close = new EventEmitter<void>();
 
   onClose() {

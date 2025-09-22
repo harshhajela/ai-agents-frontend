@@ -33,22 +33,22 @@ export interface WebsiteData {
     how_it_works: {
       title: string;
       description: string;
-      steps: Array<{
+      steps: {
         title: string;
         description: string;
-      }>;
+      }[];
     };
     cost: {
       title: string;
       description: string;
-      details: Array<{
+      details: {
         item: string;
         price: string;
-      }>;
+      }[];
       note: string;
     };
   };
-  agents: Array<{
+  agents: {
     id: string;
     name: string;
     summary: string;
@@ -58,13 +58,13 @@ export interface WebsiteData {
     techStack: string[];
     features: string[];
     use_cases: string[];
-  }>;
+  }[];
   footer: {
     copyright: string;
-    links: Array<{
+    links: {
       title: string;
       url: string;
-    }>;
+    }[];
   };
 }
 

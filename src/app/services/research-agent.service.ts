@@ -10,19 +10,19 @@ interface ResearchRequest {
 
 interface ResearchResponse {
   final_summary: string;
-  sources: Array<{
+  sources: {
     title: string;
     url: string;
-  }>;
+  }[];
 }
 
 interface HistoryItem {
   query: string;
   final_summary: string;
-  sources: Array<{
+  sources: {
     title: string;
     url: string;
-  }>;
+  }[];
   created_at: string;
 }
 

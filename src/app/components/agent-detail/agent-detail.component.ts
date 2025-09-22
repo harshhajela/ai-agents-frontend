@@ -7,19 +7,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { ResearchAgentService, type HistoryItem } from '../../services/research-agent.service';
 import { WebsiteDataService, WebsiteData } from '../../services/website-data.service';
 import { HistoryModalComponent } from '../history-modal/history-modal.component';
+import { ProcessAnimationComponent } from '../process-animation/process-animation.component';
 
 interface ResearchResult {
   final_summary: string;
-  sources: Array<{
+  sources: {
     title: string;
     url: string;
-  }>;
+  }[];
 }
 
 @Component({
   selector: 'app-agent-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, MarkdownModule, HttpClientModule, HistoryModalComponent],
+  imports: [CommonModule, FormsModule, MarkdownModule, HttpClientModule, HistoryModalComponent, ProcessAnimationComponent],
   templateUrl: './agent-detail.component.html',
   styleUrl: './agent-detail.component.scss'
 })
@@ -30,6 +31,7 @@ export class AgentDetailComponent implements OnInit {
   query = signal<string>('');
   submittedQuery = signal<string>('');
   isLoading = signal<boolean>(false);
+  showAnimation = signal<boolean>(false);
   result = signal<ResearchResult | null>(null);
   error = signal<string>('');
 
@@ -72,26 +74,36 @@ export class AgentDetailComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  navigateToHome() {
+    this.router.navigate(['/home']);
+  }
+
   async submitQuery() {
     if (!this.query().trim()) return;
 
     this.isLoading.set(true);
+    this.showAnimation.set(true);
     this.error.set('');
     this.result.set(null);
 
     const submittedQuery = this.query(); // Store the query before clearing
+    this.submittedQuery.set(submittedQuery); // Store the submitted query for display
 
     try {
       const response = await this.researchService.runResearch(submittedQuery).toPromise();
       if (response) {
-        this.result.set(response);
-        this.submittedQuery.set(submittedQuery); // Store the submitted query for display
-        this.query.set(''); // Clear the input after successful submission
-        // Refresh history after successful query
-        this.loadHistory();
+        // Simulate the process animation duration
+        setTimeout(() => {
+          this.result.set(response);
+          this.query.set(''); // Clear the input after successful submission
+          this.showAnimation.set(false);
+          // Refresh history after successful query
+          this.loadHistory();
+        }, 7500); // Total animation duration
       }
     } catch (err: any) {
       this.error.set(err.message || 'An error occurred while processing your request');
+      this.showAnimation.set(false);
     } finally {
       this.isLoading.set(false);
     }
@@ -133,8 +145,31 @@ export class AgentDetailComponent implements OnInit {
     return date.toLocaleDateString();
   }
 
-  truncateQuery(query: string, maxLength: number = 80): string {
+  truncateQuery(query: string, maxLength = 80): string {
     if (query.length <= maxLength) return query;
     return query.substring(0, maxLength) + '...';
+  }
+
+  getUniqueTopics(): number {
+    const topics = new Set(this.history().map(item =>
+      item.query.toLowerCase().split(' ').slice(0, 3).join(' ')
+    ));
+    return topics.size;
+  }
+
+  getAverageResponseTime(): string {
+    // Simulated response time calculation
+    // In a real implementation, this would use actual timing data
+    if (this.history().length === 0) return '0';
+
+    const avgTime = 2.5 + (Math.random() * 2); // Simulate 2.5-4.5 seconds
+    return avgTime.toFixed(1);
+  }
+
+  scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

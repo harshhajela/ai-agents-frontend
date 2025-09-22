@@ -1,0 +1,48 @@
+<div class="process-animation" [class.visible]="isVisible">
+  <div class="animation-container">
+    <div class="process-header">
+      <h3>Research in Progress</h3>
+      <p>Your AI research agent is working behind the scenes</p>
+    </div>
+
+    <div class="process-steps">
+      @for (step of steps; track step.id; let i = $index) {
+      <div class="process-step" [ngClass]="getStepClass(step)">
+        <div class="step-indicator">
+          <div class="step-icon" [class.active]="step.status === 'active'" [class.completed]="step.status === 'completed'">
+            <span class="icon-emoji">{{ step.icon }}</span>
+            @if (step.status === 'completed') {
+            <div class="checkmark">✓</div>
+            }
+            @if (step.status === 'active') {
+            <div class="spinner">
+              <div class="spinner-ring"></div>
+            </div>
+            }
+          </div>
+
+          @if (i < steps.length - 1) {
+          <div class="step-connector" [class.active]="step.status === 'completed'"></div>
+          }
+        </div>
+
+        <div class="step-content">
+          <h4>{{ step.name }}</h4>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="(currentStep() + 1) * 33.33"></div>
+    </div>
+
+    @if (isComplete()) {
+    <div class="completion-message">
+      <div class="success-icon">🎉</div>
+      <p>Research complete! Your comprehensive summary is ready.</p>
+    </div>
+    }
+  </div>
+</div>

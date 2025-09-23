@@ -229,3 +229,79 @@ input, textarea {
     transition: color 0.3s ease;
   }
 }
+
+/* Common Utility Classes */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-mid));
+}
+
+.card-base {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px var(--shadow-light);
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 8px 20px var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-mid));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, var(--primary-gradient-mid), var(--primary-gradient-end));
+    transform: translateY(-2px);
+  }
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-gradient-start), var(--primary-gradient-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Additional utility classes for component SCSS optimization */
+.input-focus-style {
+  &:focus {
+    outline: none;
+    border-color: var(--primary-gradient-mid);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+.input-placeholder-style {
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+}
+
+.input-disabled-style {
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

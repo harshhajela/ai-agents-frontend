@@ -25,15 +25,15 @@ jobs:
         run: |
           echo "Original environment.prod.ts content:"
           cat src/environments/environment.prod.ts
-          echo "Replacing API URL with: $API_URL"
+          echo "Replacing API URL placeholder with: $API_URL"
 
           # Replace the placeholder URL with the actual API URL
-          sed -i "s|https://api.yourdomain.com|${API_URL}|g" src/environments/environment.prod.ts
+          sed -i "s|__API_URL_PLACEHOLDER__|${API_URL}|g" src/environments/environment.prod.ts
 
-          # Also handle case where localhost might be present
+          # Also handle any remaining localhost references
           sed -i "s|http://localhost:[0-9]*|${API_URL}|g" src/environments/environment.prod.ts
 
-          # Direct replacement approach for apiUrl field
+          # Fallback: Direct replacement approach for apiUrl field
           sed -i "s|apiUrl: '[^']*'|apiUrl: '${API_URL}'|g" src/environments/environment.prod.ts
 
           echo "Updated environment.prod.ts content:"

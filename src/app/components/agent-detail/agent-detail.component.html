@@ -63,16 +63,8 @@
       }
 
       <!-- Results Section -->
-      @if (result() || error()) {
-      <div class="results-section">
-        @if (error()) {
-        <div class="error-message">
-          <h3>Error</h3>
-          <p>{{ error() }}</p>
-        </div>
-        }
-
-        @if (result()) {
+      @if (result()) {
+      <div class="results-section" id="results-section">
         <div class="result-content">
           <div class="summary-section">
             <h3>{{ submittedQuery() || 'Research Summary' }}</h3>
@@ -96,7 +88,6 @@
           </div>
           }
         </div>
-        }
       </div>
       }
 

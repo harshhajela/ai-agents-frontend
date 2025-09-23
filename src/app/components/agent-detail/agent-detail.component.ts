@@ -6,6 +6,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { HttpClientModule } from '@angular/common/http';
 import { ResearchAgentService, type HistoryItem } from '../../services/research-agent.service';
 import { WebsiteDataService, WebsiteData } from '../../services/website-data.service';
+import { ToastService } from '../../services/toast.service';
 import { HistoryModalComponent } from '../history-modal/history-modal.component';
 import { ProcessAnimationComponent } from '../process-animation/process-animation.component';
 
@@ -46,7 +47,8 @@ export class AgentDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private researchService: ResearchAgentService,
-    private websiteDataService: WebsiteDataService
+    private websiteDataService: WebsiteDataService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -99,10 +101,14 @@ export class AgentDetailComponent implements OnInit {
           this.showAnimation.set(false);
           // Refresh history after successful query
           this.loadHistory();
+          // Scroll to results section
+          this.scrollToSection('results-section');
         }, 7500); // Total animation duration
       }
     } catch (err: any) {
-      this.error.set(err.message || 'An error occurred while processing your request');
+      // Show error toast instead of displaying error in UI
+      const errorMessage = err.message || 'An error occurred while processing your request';
+      this.toastService.showError(errorMessage);
       this.showAnimation.set(false);
     } finally {
       this.isLoading.set(false);
@@ -125,6 +131,7 @@ export class AgentDetailComponent implements OnInit {
       error: (error) => {
         console.error('Error loading history:', error);
         this.historyError.set('Failed to load history');
+        this.toastService.showError('Failed to load query history');
         this.isLoadingHistory.set(false);
       }
     });

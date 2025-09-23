@@ -4,11 +4,12 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { WebsiteDataService, WebsiteData } from './services/website-data.service';
 import { InstallPromptComponent } from './components/install-prompt/install-prompt.component';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 import { PwaService } from './services/pwa.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HttpClientModule, InstallPromptComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, HttpClientModule, InstallPromptComponent, ToastContainerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

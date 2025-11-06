@@ -1,44 +1,41 @@
 @if (websiteData()) {
 <section class="hero">
+  <div class="beach-background"></div>
+  <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1>{{ websiteData()!.hero.title }}</h1>
-    <p>{{ websiteData()!.hero.subtitle }}</p>
-    <button class="cta-button" (click)="scrollToSection('agents')">{{ websiteData()!.hero.cta_text }}</button>
-  </div>
-  <div class="scroll-indicator" (click)="scrollToSection('agents')">
-    <div class="scroll-arrow">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    <h1>ai Agents Hub</h1>
+    <p>Automate Intelligence.<br>Amplify Productivity.</p>
+    <button class="cta-button" (click)="scrollToSection('agents')">
+      <span>Try Now</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7" />
       </svg>
-    </div>
-    <span>{{ websiteData()!.hero.scroll_text }}</span>
+    </button>
   </div>
 </section>
 
 <section class="agents-section" id="agents">
   <div class="container">
-    <h2>Try the Agent</h2>
-    <div class="agents-grid">
-      @for (agent of websiteData()!.agents; track agent.id) {
-      <div class="agent-card">
-        <div class="card-image">
-          <img [src]="websiteData()!.images.architecture_diagram"
-               alt="Architecture Diagram"
-               class="architecture-diagram" />
-        </div>
-        <div class="card-content">
-          <h3>{{ agent.name }}</h3>
-          <p class="summary">{{ agent.summary }}</p>
-          <div class="tech-stack">
-            @for (tech of agent.techStack; track tech) {
-            <span class="tech-tag">{{ tech }}</span>
-            }
-          </div>
-          <button class="try-button" (click)="navigateToAgent(agent.id)">Try Me</button>
-        </div>
+    @for (agent of websiteData()!.agents; track agent.id) {
+    <div class="agent-card" (click)="navigateToAgent(agent.id)">
+      <div class="card-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path
+            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
       </div>
-      }
+      <div class="card-content">
+        <h3>{{ agent.name }}</h3>
+        <p>{{ agent.summary }}</p>
+        <span class="try-out-badge">Try out →</span>
+      </div>
+      <div class="card-arrow">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </div>
     </div>
+    }
   </div>
 </section>
 }

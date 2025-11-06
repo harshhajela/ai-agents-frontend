@@ -1,38 +1,36 @@
 @if (websiteData()) {
 <div class="agent-detail-container">
-  <div class="back-button-container">
-    <button class="back-button" (click)="goBack()">
-      ← Back to Home
-    </button>
-  </div>
-
   <div class="agent-content" *ngIf="agentInfo(); else notFound">
-    <header class="agent-header">
-      <h1>{{ agentInfo()?.name }}</h1>
-    </header>
+    <button class="back-button" (click)="goBack()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>Back</span>
+    </button>
 
-    <!-- Try Agent Section with GIF and Search Box -->
+    <!-- Try Agent Section -->
     <section class="try-agent-landing">
-      <div class="landing-grid">
-        <div class="gif-section">
-          <div class="gif-container">
-            <img [src]="websiteData()!.images.architecture_diagram"
-                 alt="Architecture Diagram"
-                 class="architecture-gif" />
+      <div class="search-section">
+          <div class="section-header">
+            <h2>Research Agent</h2>
+            <div class="config-area">
+              <span class="config-summary">{{ getConfigSummary() }}</span>
+              <button type="button" class="config-button" (click)="openConfigModal()" title="Configuration">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M12 1v6m0 6v6m5.5-14.5l-4.2 4.2m-5.6 5.6l-4.2 4.2M23 12h-6m-6 0H1m20.5-5.5l-4.2 4.2m-5.6 5.6l-4.2 4.2"></path>
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div class="search-section">
-          <h2>Try the Research Agent</h2>
-          <p class="search-description">Experience the power of AI-driven research with real-time web search and intelligent synthesis</p>
 
           <form (ngSubmit)="submitQuery()" class="query-form">
             <div class="input-group">
               <textarea
                 [(ngModel)]="query"
                 name="query"
-                placeholder="Enter your research query here..."
-                rows="4"
+                placeholder="Ask anything..."
+                rows="3"
                 class="query-input"
                 [disabled]="isLoading() || showAnimation()"
               ></textarea>
@@ -42,18 +40,16 @@
                 [disabled]="!query().trim() || isLoading() || showAnimation()"
               >
                 @if (!isLoading()) {
-                <span>Submit Query</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
                 } @else {
-                <span class="loading-text">
-                  <div class="mini-spinner"></div>
-                  Processing...
-                </span>
+                <div class="mini-spinner"></div>
                 }
               </button>
             </div>
           </form>
         </div>
-      </div>
 
       <!-- Process Animation -->
       @if (showAnimation()) {
@@ -91,29 +87,6 @@
       </div>
       }
 
-      <!-- Recent History Section -->
-      @if (history().length > 0) {
-      <div class="recent-history-section">
-        <h3>Recent Queries</h3>
-        <div class="recent-history-list">
-          @for (historyItem of history().slice(0, 3); track historyItem.created_at) {
-          <div class="recent-history-item" (click)="openHistoryModal(historyItem)">
-            <div class="history-query-preview">
-              <p>{{ truncateQuery(historyItem.query, 60) }}</p>
-            </div>
-            <div class="history-date">
-              <span>{{ formatDate(historyItem.created_at) }}</span>
-            </div>
-          </div>
-          }
-        </div>
-        @if (history().length > 3) {
-        <button class="view-more-btn" (click)="scrollToSection('history-section')">
-          View All History
-        </button>
-        }
-      </div>
-      }
     </section>
 
     <section class="agent-info">
@@ -155,38 +128,29 @@
       </div>
     </section>
 
-    <section class="history-section" id="history-section" *ngIf="history().length > 0">
-      <h2>Query History</h2>
-      <div class="history-list">
-        @if (isLoadingHistory()) {
-        <div class="history-loading">
-          <div class="spinner"></div>
-          <span>Loading history...</span>
-        </div>
-        } @else if (historyError()) {
-        <div class="history-error">
-          <p>{{ historyError() }}</p>
-          <button class="retry-button" (click)="loadHistory()">Retry</button>
-        </div>
-        } @else {
-        @for (historyItem of history(); track historyItem.created_at) {
-        <div class="history-item">
-          <div class="history-content">
-            <div class="history-query">
-              <p>{{ truncateQuery(historyItem.query) }}</p>
-            </div>
-            <div class="history-meta">
-              <span class="history-date">{{ formatDate(historyItem.created_at) }}</span>
-            </div>
+    <!-- Recent History Section at the end -->
+    @if (history().length > 0) {
+    <section class="recent-history-section">
+      <h3>Recent Queries</h3>
+      <div class="recent-history-list">
+        @for (historyItem of history().slice(0, 3); track historyItem.created_at) {
+        <div class="recent-history-item" (click)="openHistoryModal(historyItem)">
+          <div class="history-query-preview">
+            <p>{{ truncateQuery(historyItem.query, 60) }}</p>
           </div>
-          <button class="see-more-button" (click)="openHistoryModal(historyItem)">
-            See More
-          </button>
+          <div class="history-date">
+            <span>{{ formatDate(historyItem.created_at) }}</span>
+          </div>
         </div>
-        }
         }
       </div>
+      @if (history().length > 3) {
+      <button class="view-more-btn" (click)="openAllHistoryModal()">
+        View All History
+      </button>
+      }
     </section>
+    }
   </div>
 
   <ng-template #notFound>
@@ -204,4 +168,60 @@
   [isVisible]="isModalVisible()"
   (close)="closeHistoryModal()">
 </app-history-modal>
+
+<!-- Configuration Modal -->
+<app-config-modal
+  [isVisible]="isConfigModalVisible()"
+  [currentConfig]="currentConfig()"
+  (close)="closeConfigModal()"
+  (save)="saveConfig($event)">
+</app-config-modal>
+
+<!-- All History Modal -->
+@if (isAllHistoryModalVisible()) {
+<div class="modal-overlay" (click)="closeAllHistoryModal()">
+  <div class="all-history-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Query History</h2>
+      <button type="button" class="close-button" (click)="closeAllHistoryModal(); $event.stopPropagation()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      @if (isLoadingHistory()) {
+      <div class="history-loading">
+        <div class="spinner"></div>
+        <span>Loading history...</span>
+      </div>
+      } @else if (historyError()) {
+      <div class="history-error">
+        <p>{{ historyError() }}</p>
+        <button class="retry-button" (click)="loadHistory()">Retry</button>
+      </div>
+      } @else {
+      <div class="history-list">
+        @for (historyItem of history(); track historyItem.created_at) {
+        <div class="history-item">
+          <div class="history-content">
+            <div class="history-query">
+              <p>{{ truncateQuery(historyItem.query) }}</p>
+            </div>
+            <div class="history-meta">
+              <span class="history-date">{{ formatDate(historyItem.created_at) }}</span>
+            </div>
+          </div>
+          <button class="see-more-button" (click)="openHistoryModal(historyItem); closeAllHistoryModal()">
+            See More
+          </button>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
 }

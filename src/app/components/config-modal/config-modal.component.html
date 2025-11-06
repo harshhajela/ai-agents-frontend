@@ -1,0 +1,128 @@
+@if (isVisible) {
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-container" (click)="stopPropagation($event)">
+    <div class="modal-header">
+      <h2>Configuration Settings</h2>
+      <button type="button" class="close-button" (click)="closeModal(); $event.stopPropagation()" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Model Selection -->
+      <div class="config-section">
+        <label class="section-label">Model Selection</label>
+        <p class="section-description">Choose the AI model for your research tasks</p>
+
+        <div class="models-grid">
+          @for (model of models; track model.id) {
+          <div
+            class="model-card"
+            [class.selected]="selectedModel() === model.id"
+            [class.disabled]="!model.available"
+            (click)="selectModel(model.id)">
+
+            <div class="model-header">
+              <div class="model-name-wrapper">
+                <h3>{{ model.name }}</h3>
+                @if (!model.available) {
+                <span class="pro-badge">PRO</span>
+                }
+              </div>
+              <div class="model-pricing" [style.color]="getPricingColor(model.pricing)">
+                {{ model.pricing }}
+              </div>
+            </div>
+
+            <p class="model-description">{{ model.description }}</p>
+
+            <div class="model-power">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              <span>{{ model.power }}</span>
+            </div>
+
+            @if (selectedModel() === model.id) {
+            <div class="selected-indicator">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            }
+
+            @if (!model.available) {
+            <div class="disabled-overlay">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Temperature Control -->
+      <div class="config-section">
+        <label class="section-label">Temperature</label>
+        <p class="section-description">Control the creativity and randomness of responses (0.0 - 2.0)</p>
+
+        <div class="temperature-control">
+          <div class="temperature-header">
+            <span class="temperature-label">{{ getTemperatureLabel() }}</span>
+            <span class="temperature-value">{{ temperature() !== undefined && temperature() !== null ? temperature()?.toFixed(2) : 'Default' }}</span>
+          </div>
+
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="2"
+              step="0.1"
+              [value]="temperature() ?? 1.0"
+              (input)="onTemperatureChange($event)"
+              class="temperature-slider" />
+
+            <div class="slider-labels">
+              <span>0.0<br><small>Precise</small></span>
+              <span>1.0<br><small>Balanced</small></span>
+              <span>2.0<br><small>Creative</small></span>
+            </div>
+          </div>
+
+          <div class="temperature-explanation">
+            <div class="explanation-item">
+              <strong>Lower (0.0 - 0.5):</strong> More focused and deterministic responses
+            </div>
+            <div class="explanation-item">
+              <strong>Medium (0.5 - 1.5):</strong> Balanced between accuracy and creativity
+            </div>
+            <div class="explanation-item">
+              <strong>Higher (1.5 - 2.0):</strong> More diverse and creative outputs
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="reset-button" (click)="resetToDefaults(); $event.stopPropagation()">
+        Reset to Defaults
+      </button>
+      <div class="action-buttons">
+        <button type="button" class="cancel-button" (click)="closeModal(); $event.stopPropagation()">
+          Cancel
+        </button>
+        <button type="button" class="save-button" (click)="saveConfig(); $event.stopPropagation()">
+          Save Configuration
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

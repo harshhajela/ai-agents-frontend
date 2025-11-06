@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 
 interface ResearchRequest {
   query: string;
+  model_name?: 'llama' | 'deepseek' | 'google' | 'grok';
+  temperature?: number;
 }
 
 interface ResearchResponse {
@@ -40,8 +42,16 @@ export class ResearchAgentService {
 
   constructor(private http: HttpClient) {}
 
-  runResearch(query: string): Observable<ResearchResponse> {
+  runResearch(query: string, modelName?: 'llama' | 'deepseek' | 'google' | 'grok', temperature?: number): Observable<ResearchResponse> {
     const request: ResearchRequest = { query };
+
+    // Only include optional parameters if they are defined
+    if (modelName !== undefined) {
+      request.model_name = modelName;
+    }
+    if (temperature !== undefined && temperature !== null) {
+      request.temperature = temperature;
+    }
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'

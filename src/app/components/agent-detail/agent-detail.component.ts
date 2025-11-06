@@ -9,6 +9,7 @@ import { WebsiteDataService, WebsiteData } from '../../services/website-data.ser
 import { ToastService } from '../../services/toast.service';
 import { HistoryModalComponent } from '../history-modal/history-modal.component';
 import { ProcessAnimationComponent } from '../process-animation/process-animation.component';
+import { ConfigModalComponent, ModelConfig } from '../config-modal/config-modal.component';
 
 interface ResearchResult {
   final_summary: string;
@@ -21,7 +22,7 @@ interface ResearchResult {
 @Component({
   selector: 'app-agent-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, MarkdownModule, HttpClientModule, HistoryModalComponent, ProcessAnimationComponent],
+  imports: [CommonModule, FormsModule, MarkdownModule, HttpClientModule, HistoryModalComponent, ProcessAnimationComponent, ConfigModalComponent],
   templateUrl: './agent-detail.component.html',
   styleUrl: './agent-detail.component.scss'
 })
@@ -42,6 +43,13 @@ export class AgentDetailComponent implements OnInit {
   historyError = signal<string>('');
   selectedHistoryItem = signal<HistoryItem | null>(null);
   isModalVisible = signal<boolean>(false);
+
+  // Configuration functionality
+  isConfigModalVisible = signal<boolean>(false);
+  currentConfig = signal<ModelConfig>({ model_name: 'grok' });
+
+  // All history modal
+  isAllHistoryModalVisible = signal<boolean>(false);
 
   constructor(
     private route: ActivatedRoute,
@@ -92,7 +100,12 @@ export class AgentDetailComponent implements OnInit {
     this.submittedQuery.set(submittedQuery); // Store the submitted query for display
 
     try {
-      const response = await this.researchService.runResearch(submittedQuery).toPromise();
+      const config = this.currentConfig();
+      const response = await this.researchService.runResearch(
+        submittedQuery,
+        config.model_name,
+        config.temperature
+      ).toPromise();
       if (response) {
         // Simulate the process animation duration
         setTimeout(() => {
@@ -178,5 +191,45 @@ export class AgentDetailComponent implements OnInit {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  openConfigModal() {
+    this.isConfigModalVisible.set(true);
+  }
+
+  closeConfigModal() {
+    this.isConfigModalVisible.set(false);
+  }
+
+  saveConfig(config: ModelConfig) {
+    this.currentConfig.set(config);
+    this.toastService.showSuccess('Configuration saved successfully');
+  }
+
+  getConfigSummary(): string {
+    const config = this.currentConfig();
+    const parts: string[] = [];
+
+    if (config.model_name) {
+      parts.push(config.model_name.charAt(0).toUpperCase() + config.model_name.slice(1));
+    } else {
+      parts.push('Grok');
+    }
+
+    if (config.temperature !== undefined && config.temperature !== null) {
+      parts.push(`Temp: ${config.temperature.toFixed(1)}`);
+    } else {
+      parts.push('Temp: Default');
+    }
+
+    return parts.join(' • ');
+  }
+
+  openAllHistoryModal() {
+    this.isAllHistoryModalVisible.set(true);
+  }
+
+  closeAllHistoryModal() {
+    this.isAllHistoryModalVisible.set(false);
   }
 }
